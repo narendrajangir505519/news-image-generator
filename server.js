@@ -25,7 +25,7 @@ app.get("/", (_req, res) => {
 });
 
 app.post("/run", async (req, res) => {
-
+const TARGET_URL = req.body.url;
   if (!TARGET_URL) {
     return res.status(500).json({ error: "TARGET_URL missing" });
   }
