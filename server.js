@@ -26,9 +26,6 @@ app.get("/", (_req, res) => {
 });
 
 app.post("/run", async (req, res) => {
-  if (!isAuthorized(req)) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
 
   if (!TARGET_URL) {
     return res.status(500).json({ error: "TARGET_URL missing" });
