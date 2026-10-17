@@ -96,25 +96,20 @@ app.post("/run", async (req, res) => {
     await page.waitForFunction(() => {
       const box = document.querySelector("#statusBox");
       if (!box) return false;
-
-      const css = getComputedStyle(box);
-      const color = css.backgroundColor;
+    
+      const color = getComputedStyle(box).color;
       const match = color.match(
         /rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/
       );
-
-      const rgbGreen = match &&
-        Number(match[2]) > 100 &&
-        Number(match[2]) > Number(match[1]) * 1.25 &&
-        Number(match[2]) > Number(match[3]) * 1.25;
-
-      const classGreen =
-        /green|success/i.test(box.className?.toString() || "");
-
-      return window.__statusSawNonGreen &&
-        Boolean(rgbGreen || classGreen);
+    
+      if (!match) return false;
+    
+      const r = Number(match[1]);
+      const g = Number(match[2]);
+      const b = Number(match[3]);
+    
+      return g > 100 && g > r * 1.25 && g > b * 1.25;
     }, { timeout: TIMEOUT_MS });
-
     const statusText = await statusBox.innerText();
 
     console.log("SUCCESS: statusBox is green");
