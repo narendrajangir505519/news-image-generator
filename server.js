@@ -43,7 +43,7 @@ const TARGET_URL = req.body.url;
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    page.setDefaultTimeout(30000);
+    page.setDefaultTimeout(60000);
 
     console.log("Opening news image generator:", TARGET_URL);
     await page.goto(TARGET_URL, { waitUntil: "domcontentloaded" });
