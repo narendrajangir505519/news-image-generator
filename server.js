@@ -6,21 +6,20 @@ const app = express();
 app.use(express.json());
 
 const PORT = process.env.PORT || 10000;
-const TARGET_URL = process.env.TARGET_URL;
-const SECRET = process.env.AUTOMATION_SECRET;
 const TIMEOUT_MS = Number(process.env.TIMEOUT_MS || 30 * 60 * 1000);
 
 let running = false;
 
-function isAuthorized(req) {
-  return Boolean(SECRET) &&
-    req.get("x-automation-secret") === SECRET;
-}
-
 app.get("/", (_req, res) => {
+  const TARGET_URL = req.body.url;
+  if (!TARGET_URL) {
+    return res.status(400).json({
+      error: "URL missing"
+    });
+  }
   res.json({
     service: "News Image Generator Automation",
-    ready: Boolean(TARGET_URL && SECRET),
+    ready: true,
     running
   });
 });
